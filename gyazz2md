@@ -1,0 +1,101 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+#
+# Gyazz2md
+#
+# % gyazz2md 'masui' 'presen2014'
+#
+require 'gyazz'
+
+wikiname = ARGV.shift
+title = ARGV.shift
+
+if wikiname.nil? |  title.nil? then
+  puts "% gyazz2md wikiname pagetitle > slide.md"
+  exit
+end
+
+wiki = Gyazz::Wiki.new(wikiname)
+wiki.host = 'http://Gyazz.com'
+page = wiki.page(title)
+
+page.text.split(/\n/).each { |line|
+  next if line =~ /^#/
+  next if line =~ /^%/
+  line.sub!(/^(\s*)/,'')
+  indent = $1.length
+
+  # puts "<!-- #{line} -->"
+
+  if line =~ /^</ then
+    puts line
+  else
+    line.gsub!(/''/,"&#148;")
+    line.gsub!(/\`\`/,"&#147;")
+    images = []
+
+    head = ''
+    tail = ''
+    while line =~ /^([^\]]*)\[\[\[([^\[]*\.(png|jpg|gif)[^\[]*)\]\]\](.*)$/i do
+      images << $2
+      head = $1
+      tail = $4
+      line = head + tail
+    end
+    if images.length > 0 then
+      s = ''
+      images.each { |image|
+        image =~ /^(\S+)(\s+(.*))?$/
+        url = $1
+        desc = $3
+        descs = desc.to_s.split(/\s+/)
+        if descs[0] =~ /\.(png|jpg|gif)$/i then
+          s += "<a href='#{url}'><img src='#{descs[0]}' border=none #{descs.shift; descs.join(' ')}></a>"
+        elsif url =~ /\.(png|jpg|gif)$/i then
+          s += "<img src='#{url}' #{desc}>"
+        else
+          # puts "aaaaaaa"
+        end
+      }
+      line = head + "<center>#{s}</center>" + tail
+    end
+    line.gsub!(/\[\[\[([^\[]*)\]\]\]/){
+      s = $1
+      "<strong>#{s}</strong>"
+    }
+    line.gsub!(/\[\[([^\[]*)\]\]/){
+      $1 =~ /^(\S+)(\s+(.*))?$/
+      url = $1
+      desc = $3
+      descs = desc.to_s.split(/\s+/)
+      if descs[0] =~ /\.(png|jpg|gif)$/i then
+        "<center><a href='#{url}'><img src='#{descs[0]}' border=none #{descs.shift; descs.join(' ')}></a></center>"
+      elsif url =~ /\.(png|jpg|gif)$/i then
+        "<center><img src='#{url}' #{desc}></center>"
+      else
+        if url =~ /^http/ || url =~ /html$/ then
+          if desc.nil? then
+            "<a href='#{url}'>#{url}</a>"
+          else
+            "<a href='#{url}'>#{desc}</a>"
+          end
+        else
+          "<a href='http://Gyazz.com/#{@gyazzname}/#{url}'>#{url}</a>"
+        end
+      end
+    }
+
+    if indent == 0 then
+      puts "# #{line}"
+    elsif indent == 1 then
+      puts "- #{line}"
+    elsif indent == 2 then
+      puts "  - #{line}"
+    elsif indent == 3 then
+      puts "    - #{line}"
+    end
+  end
+  puts
+}
+
+
