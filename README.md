@@ -9,8 +9,9 @@
 
 - Gyazz上のスライドデータをMarkdownに変換します
 - <a href="http://glide.so/">glide.so</a> で利用できます
+- Gyazzデータを取得するgyazzコマンドは<a href="http://GitHub.com/masui/ghazz-ruby">gyazz-ruby</a>に含まれています
 
-        % gyazz2md wikiname pagename > presentation.md
+        % gyazz wikiname pagename | gyazz2md > presentation.md
         % gist presentation.md
         % (glide.so上でインポート)
 
@@ -21,12 +22,8 @@
 - Gyazz上のスライドデータをHTMLに変換します
 - 起動ディレクトリにいろんなHTMLファイルができるので注意
 
-        % gyazz2html -p wikiname pagename # 印刷用のslide.html生成
-        % gyazz2html wikiname pagename    # TOC.html, page*.html生成
+        % gyazz wikiname pagename | gyazz2html -p # 印刷用のslide.html生成
+        % gyazz wikiname pagename | gyazz2html    # TOC.html, page*.html生成
 
-- テキストからHTMLを変換することもできます
-        
-		% text2html -p {textfile}
-		% text2html {textfile}
 		
 

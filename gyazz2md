@@ -3,23 +3,10 @@
 #
 # Glide.so で利用できる形のMarkdown型式に変換
 #
-# % gyazz2md 'masui' 'presen2014'
+# % gyazz masui presentation | gyazz2md
 #
-require 'gyazz'
 
-wikiname = ARGV.shift
-title = ARGV.shift
-
-if wikiname.nil? |  title.nil? then
-  puts "% gyazz2md wikiname pagetitle > slide.md"
-  exit
-end
-
-wiki = Gyazz::Wiki.new(wikiname)
-wiki.host = 'http://Gyazz.com'
-page = wiki.page(title)
-
-page.text.split(/\n/).each { |line|
+ARGF.each { |line|
   next if line =~ /^#/
   next if line =~ /^%/
   line.sub!(/^(\s*)/,'')

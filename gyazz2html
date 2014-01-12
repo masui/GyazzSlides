@@ -22,19 +22,7 @@ while ARGV[0] =~ /^-/
   end
 end
 
-wikiname = ARGV.shift
-title = ARGV.shift
-
-if wikiname.nil? |  title.nil? then
-  puts "% gyazz2html wikiname pagetitle > slide.md"
-  exit
-end
-
-wiki = Gyazz::Wiki.new(wikiname)
-wiki.host = 'http://Gyazz.com'
-page = wiki.page(title)
-
-page.text.split(/\n/).each { |line|
+ARGF.each { |line|
   foil.process line.chomp
 }
 foil.toc unless printer_mode
