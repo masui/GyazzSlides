@@ -1,9 +1,9 @@
 # GyazzSlide
 
-Gyazzデータからスライドを作るシステム
+<a href="http://Gyazz.com/">Gyazz</a>のデータからスライドを作るシステム
 
-- gyazz2html
-- gyazz2md
+- **gyazz2html**
+- **gyazz2md**
 
 ## gyazz2md
 
@@ -14,9 +14,12 @@ Gyazzデータからスライドを作るシステム
         % gist presentation.md
         % (glide.so上でインポート)
 
+- <a href="https://github.com/ymrl/mdslide">mdslide</a>でも利用できるかも?        
+
 ## gyazz2html
 
 - Gyazz上のスライドデータをHTMLに変換します
+- 起動ディレクトリにいろんなHTMLファイルができるので注意
 
         % gyazz2html -p wikiname pagename # 印刷用のslide.html生成
         % gyazz2html wikiname pagename    # TOC.html, page*.html生成
