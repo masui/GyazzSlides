@@ -1,4 +1,8 @@
+#!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
+#
+# % 
+#
 class Foil
   def initialize
     @page = 0
